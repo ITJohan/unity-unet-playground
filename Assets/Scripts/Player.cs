@@ -1,13 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class RandomSpawn : MonoBehaviour
+public class Player : NetworkBehaviour
 {
+    public Camera cam; 
+
     // Start is called before the first frame update
     void Start()
     {
-        transform.position = new Vector3(Random.Range(0f, 10f), 1f, Random.Range(0f, 10f));
+        if (isLocalPlayer) return;
+ 
+        cam.enabled = false;
     }
 
     // Update is called once per frame
