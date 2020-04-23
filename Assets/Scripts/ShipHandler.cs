@@ -10,7 +10,7 @@ public class ShipHandler : NetworkBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.AddForce(new Vector3(190f, 0f, 200f));
+        //rb.AddForce(new Vector3(800f, 0f, 600f));
     }
 
     // Update is called once per frame

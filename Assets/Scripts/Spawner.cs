@@ -9,11 +9,9 @@ public class Spawner : NetworkBehaviour
 
     public override void OnStartServer()
     {
-        GameObject entity = Instantiate(prefab, new Vector3(4f, 1f, 4f), transform.rotation);
-        NetworkServer.Spawn(entity);
-        GameObject entity2 = Instantiate(prefab, new Vector3(7f, 1f, 4f), transform.rotation);
-        NetworkServer.Spawn(entity2);
-        GameObject entity3 = Instantiate(prefab, new Vector3(4f, 1f, 7f), transform.rotation);
-        NetworkServer.Spawn(entity3);
+        NetworkServer.Spawn(Instantiate(prefab, new Vector3(100f, 10f, 225f), transform.rotation));
+        NetworkServer.Spawn(Instantiate(prefab, new Vector3(300f, 10f, 225f), transform.rotation));
+        NetworkServer.Spawn(Instantiate(prefab, new Vector3(100f, 10f, 75f), transform.rotation));
+        NetworkServer.Spawn(Instantiate(prefab, new Vector3(300f, 10f, 75f), transform.rotation));
     }
 }
