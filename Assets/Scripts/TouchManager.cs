@@ -47,7 +47,7 @@ public class TouchManager : NetworkBehaviour
                 // Set finger id to ship
                 ShipHandler shipHandler = shipObject.GetComponent<ShipHandler>();
                 shipHandler.FingerId = currentTouch.fingerId;
-                shipHandler.ClearPath();
+                CmdClearPath(shipObject.GetComponent<NetworkIdentity>());
             }
         }
     }
@@ -67,7 +67,7 @@ public class TouchManager : NetworkBehaviour
                 if (currentFingerId == shipHandler.FingerId)
                 {
                     Vector3 point = cam.ScreenToWorldPoint(new Vector3(currentTouch.position.x, currentTouch.position.y, cam.transform.position.y - shipObject.transform.position.y));
-                    shipHandler.AddPointToPath(point);
+                    CmdAddPointToPath(shipObject.GetComponent<NetworkIdentity>(), point);
                 }
             }
         }
@@ -108,5 +108,17 @@ public class TouchManager : NetworkBehaviour
                 }
             }
         }
+    }
+
+    [Command]
+    void CmdAddPointToPath(NetworkIdentity netId, Vector3 point)
+    {
+        NetworkServer.objects[netId.netId].gameObject.GetComponent<ShipHandler>().AddPointToPath(point);
+    }
+
+    [Command]
+    void CmdClearPath(NetworkIdentity netId)
+    {
+        NetworkServer.objects[netId.netId].gameObject.GetComponent<ShipHandler>().ClearPath();
     }
 }

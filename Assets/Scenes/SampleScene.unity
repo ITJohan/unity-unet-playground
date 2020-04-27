@@ -339,7 +339,7 @@ MonoBehaviour:
   m_NetworkPort: 7777
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
-  m_NetworkAddress: localhost
+  m_NetworkAddress: 192.168.43.28
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
@@ -1111,21 +1111,21 @@ MonoBehaviour:
   m_SceneId:
     m_Value: 0
   m_AssetId:
-    i0: 22
-    i1: 73
-    i2: 9
-    i3: 107
-    i4: 228
-    i5: 43
-    i6: 94
-    i7: 132
-    i8: 75
-    i9: 78
-    i10: 199
-    i11: 119
-    i12: 107
-    i13: 152
-    i14: 29
-    i15: 173
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
   m_ServerOnly: 1
   m_LocalPlayerAuthority: 0

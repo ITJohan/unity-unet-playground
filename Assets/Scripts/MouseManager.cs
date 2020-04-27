@@ -22,19 +22,16 @@ public class MouseManager : NetworkBehaviour
                 if (hit.collider.tag == "Ship")
                 {
                     ship = hit.collider.gameObject;
-
-                    NetworkIdentity shipId = ship.GetComponent<NetworkIdentity>();
-
-                    CmdClearPath(shipId.netId);
+                    CmdClearPath(ship.GetComponent<NetworkIdentity>());
                 }
             }
         }
     }
 
     [Command]
-    void CmdClearPath(NetworkInstanceId netId)
+    void CmdClearPath(NetworkIdentity netId)
     {
-        NetworkServer.objects[netId].gameObject.GetComponent<ShipHandler>().ClearPath();
+        NetworkServer.objects[netId.netId].gameObject.GetComponent<ShipHandler>().ClearPath();
     }
 
     [Command]
