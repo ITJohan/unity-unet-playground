@@ -6,11 +6,12 @@ using UnityEngine.Networking;
 public class ShipHandler : NetworkBehaviour
 {
     // Variables
-    float speed = 5f;
     int fingerId;
     List<Vector3> path = new List<Vector3>();
-    Rigidbody rb;
+    LineRenderer lineRenderer;
+    Rigidbody rigidBody;
     Vector3 currentDirection;
+    public float speed = 2f;
 
     // Setter for speed
     public float Speed
@@ -22,11 +23,7 @@ public class ShipHandler : NetworkBehaviour
     public int FingerId
     {
         get { return fingerId; }
-        set
-        {
-            path.Clear();
-            fingerId = value;
-        }
+        set { fingerId = value; }
     }
    
     // Setter for currentDirection
@@ -41,15 +38,27 @@ public class ShipHandler : NetworkBehaviour
         path.Add(point);
         DrawLines();
     }
+    
+    // Clear the path
+    public void ClearPath()
+    {
+        path.Clear();
+    }
 
     void DrawLines()
     {
-        // TODO
+        lineRenderer.positionCount = path.Count;
+        lineRenderer.SetPositions(path.ToArray());
     }
     
-    // Runs at a fixed framerate
-    void FixedUpdate()
+    // Update movement
+    void Update()
     {
+        if (!isServer)
+        {
+            return;
+        }
+
         HandleMovement();
     }
 
@@ -69,15 +78,15 @@ public class ShipHandler : NetworkBehaviour
     // Make object go in a straight line after last point
     void MoveFreely()
     {
-        rb.isKinematic = false;
-        rb.velocity = currentDirection;
+        rigidBody.isKinematic = false;
+        rigidBody.velocity = currentDirection;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(currentDirection, transform.up), 0.15f);
     }
 
     // Move to the next point in path
     void MoveToPoint()
     {
-        rb.isKinematic = true;
+        rigidBody.isKinematic = true;
 
         // Move one step towards current point
         float step = speed * Time.deltaTime;
@@ -104,10 +113,16 @@ public class ShipHandler : NetworkBehaviour
     // Register components on start
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        if (!isServer)
+        {
+            return;
+        }
 
-        // TEMPORARY
-        currentDirection = new Vector3(10f, 0, 10f);
+        lineRenderer = GetComponent<LineRenderer>();
+        rigidBody = GetComponent<Rigidbody>();
+
+        // TEMPORARY (to get start velocity)
+        currentDirection = new Vector3(speed, 0f, 0f);
     }
 
 }

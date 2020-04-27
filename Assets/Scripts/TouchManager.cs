@@ -11,9 +11,22 @@ public class TouchManager : NetworkBehaviour
     Camera cam;
 
     // Set finger id to -1 on ship and remove from dict
-    void DeregisterShip(Touch currenTouch)
+    void DeregisterShip(Touch currentTouch)
     {
-        
+        int currentFingerId = currentTouch.fingerId;
+
+        if (fingerIdToShip.ContainsKey(currentFingerId))
+        {
+            GameObject shipObject = fingerIdToShip[currentFingerId];
+
+            // Handle if ship is destroyed while deregistering
+            if (shipObject != null)
+            {
+                shipObject.GetComponent<ShipHandler>().FingerId = -1;
+            }
+
+            fingerIdToShip.Remove(currentFingerId);
+        }
     }
 
     // Set up ship and finger id if touch on ship
@@ -34,6 +47,7 @@ public class TouchManager : NetworkBehaviour
                 // Set finger id to ship
                 ShipHandler shipHandler = shipObject.GetComponent<ShipHandler>();
                 shipHandler.FingerId = currentTouch.fingerId;
+                shipHandler.ClearPath();
             }
         }
     }
@@ -62,8 +76,6 @@ public class TouchManager : NetworkBehaviour
     // Set up camera at start
     void Start()
     {
-        // Disable GetMouseButtonDown(0) to register on touch
-        Input.simulateMouseWithTouches = false;
         cam = GetComponent<Camera>();
 
         if (isLocalPlayer) return;
