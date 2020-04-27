@@ -28,18 +28,6 @@ public class MouseManager : NetworkBehaviour
         }
     }
 
-    [Command]
-    void CmdClearPath(NetworkIdentity netId)
-    {
-        NetworkServer.objects[netId.netId].gameObject.GetComponent<ShipHandler>().ClearPath();
-    }
-
-    [Command]
-    void CmdAddPointToPath(NetworkIdentity netId, Vector3 point)
-    {
-        NetworkServer.objects[netId.netId].gameObject.GetComponent<ShipHandler>().AddPointToPath(point);
-    }
-
     // Disable touch register on mouse click at start
     void Start()
     {
@@ -65,5 +53,17 @@ public class MouseManager : NetworkBehaviour
             ship = null;
             InitClick();
         }
+    }
+
+    [Command]
+    void CmdAddPointToPath(NetworkIdentity netId, Vector3 point)
+    {
+        NetworkServer.objects[netId.netId].gameObject.GetComponent<ShipHandler>().AddPointToPath(point);
+    }
+
+    [Command]
+    void CmdClearPath(NetworkIdentity netId)
+    {
+        NetworkServer.objects[netId.netId].gameObject.GetComponent<ShipHandler>().ClearPath();
     }
 }

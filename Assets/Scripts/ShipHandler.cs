@@ -3,11 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+public class SyncListVector : SyncList<Vector3> {
+         
+     protected override void SerializeItem(NetworkWriter writer, Vector3 item)
+     {
+         writer.Write(item);
+     }
+
+     protected override Vector3 DeserializeItem(NetworkReader reader)
+     {
+         return reader.ReadVector3();
+     }
+ }
+
 public class ShipHandler : NetworkBehaviour
 {
     // Variables
     int fingerId;
-    List<Vector3> path = new List<Vector3>();
+    SyncListVector path = new SyncListVector();
     LineRenderer lineRenderer;
     Rigidbody rigidBody;
     Vector3 currentDirection;
@@ -48,12 +61,20 @@ public class ShipHandler : NetworkBehaviour
     void DrawLines()
     {
         lineRenderer.positionCount = path.Count;
-        lineRenderer.SetPositions(path.ToArray());
+        Vector3[] pathArr = new Vector3[path.Count];
+        int i = 0;
+        foreach (Vector3 vec in path)
+        {
+            pathArr[i] = vec;
+            i++;
+        }
+        lineRenderer.SetPositions(pathArr);
     }
     
     // Update movement
     void Update()
     {
+        DrawLines();
         if (!isServer)
         {
             return;
@@ -113,12 +134,12 @@ public class ShipHandler : NetworkBehaviour
     // Register components on start
     void Start()
     {
+        lineRenderer = GetComponent<LineRenderer>();
         if (!isServer)
         {
             return;
         }
 
-        lineRenderer = GetComponent<LineRenderer>();
         rigidBody = GetComponent<Rigidbody>();
 
         // TEMPORARY (to get start velocity)
