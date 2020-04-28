@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+// Class for a Vector3 List that syncs to clients
 public class SyncListVector : SyncList<Vector3> {
-         
      protected override void SerializeItem(NetworkWriter writer, Vector3 item)
      {
          writer.Write(item);
@@ -49,7 +49,6 @@ public class ShipHandler : NetworkBehaviour
     public void AddPointToPath(Vector3 point)
     {
         path.Add(point);
-        DrawLines();
     }
     
     // Clear the path
@@ -63,11 +62,13 @@ public class ShipHandler : NetworkBehaviour
         lineRenderer.positionCount = path.Count;
         Vector3[] pathArr = new Vector3[path.Count];
         int i = 0;
+
         foreach (Vector3 vec in path)
         {
             pathArr[i] = vec;
             i++;
         }
+
         lineRenderer.SetPositions(pathArr);
     }
     
@@ -75,6 +76,7 @@ public class ShipHandler : NetworkBehaviour
     void Update()
     {
         DrawLines();
+
         if (!isServer)
         {
             return;
@@ -117,9 +119,6 @@ public class ShipHandler : NetworkBehaviour
         {
             // Delete point if reached
             path.RemoveAt(0);
-
-            // Recalculate line renderer
-            DrawLines();
         }
         else
         {
@@ -135,6 +134,7 @@ public class ShipHandler : NetworkBehaviour
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+
         if (!isServer)
         {
             return;
