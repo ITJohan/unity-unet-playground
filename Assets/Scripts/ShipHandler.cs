@@ -141,9 +141,6 @@ public class ShipHandler : NetworkBehaviour
         }
 
         rigidBody = GetComponent<Rigidbody>();
-
-        // TEMPORARY (to get start velocity)
-        currentDirection = new Vector3(speed, 0f, 0f);
     }
 
 }
